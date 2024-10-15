@@ -8,23 +8,58 @@ sudo apt update && sudo apt upgrade -y
 echo "Installing packages..."
 sudo apt install -y curl iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip
 
-# Пункт 3: Установка Rust
-echo "Installing Rust..."
-curl https://sh.rustup.rs -sSf | sh -s -- -y
+# Пункт 3: Проверка и установка Rust, если отсутствует
+echo "Checking for Rust installation..."
+if ! command -v rustc &> /dev/null; then
+    echo "Rust not found, installing..."
+    curl https://sh.rustup.rs -sSf | sh -s -- -y
+    source $HOME/.cargo/env
+else
+    echo "Rust is already installed."
+fi
 
-# Настройка окружения для Rust
-source $HOME/.cargo/env
-
-# Пункт 4: Добавление Rust к контуру и проверка установки
-echo "Add Rust and check version..."
+# Пункт 4: Добавление Rust к контуру и проверка версии
+echo "Updating Rust and checking version..."
 export PATH="$HOME/.cargo/bin:$PATH"
 rustup update
 rustc --version
 
-# Пункт 5: Запуск Prover в новом сеансе screen
-echo "Start Prover..."
-screen -S nexus -d -m bash -c 'curl https://cli.nexus.xyz/install.sh | sh'
+# Пункт 5: Проверка и установка Nexus Prover
+NEXUS_HOME=$HOME/.nexus
 
+# Запрос на подтверждение условий использования Nexus Beta
+while [ -z "$NONINTERACTIVE" ]; do
+    read -p "Do you agree to the Nexus Beta Terms of Use (https://nexus.xyz/terms-of-use)? (Y/n) " yn </dev/tty
+    case $yn in
+        [Nn]* ) echo "Installation cancelled."; exit;;
+        [Yy]* ) break;;
+        "" ) break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+
+# Проверка наличия git
+echo "Checking for git installation..."
+if ! command -v git &> /dev/null; then
+    echo "Git is required but not found. Please install git and try again."
+    exit 1
+fi
+
+# Клонирование или обновление репозитория Nexus network-api
+echo "Setting up Nexus network-api..."
+if [ -d "$NEXUS_HOME/network-api" ]; then
+    echo "$NEXUS_HOME/network-api exists. Updating repository."
+    (cd $NEXUS_HOME/network-api && git pull)
+else
+    mkdir -p $NEXUS_HOME
+    (cd $NEXUS_HOME && git clone https://github.com/nexus-xyz/network-api)
+fi
+
+# Запуск Prover через screen
+echo "Starting Nexus Prover in a screen session..."
+screen -S nexus -d -m bash -c "(cd $NEXUS_HOME/network-api/clients/cli && cargo run --release --bin prover -- beta.orchestrator.nexus.xyz)"
+
+# Визуализация завершения работы
 echo -e "\033[1;36m"
 echo -e "████╗░██████╗░███████╗████╗  ░█████╗░███████╗░█████╗░███████╗██╗░░░░░░█████╗░"
 echo -e "██╔═╝██╔════╝░╚════██║╚═██║  ██╔══██╗╚════██║██╔══██╗╚════██║██║░░░░░██╔══██╗"
