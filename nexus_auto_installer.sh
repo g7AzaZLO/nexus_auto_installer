@@ -6,7 +6,7 @@ sudo apt update && sudo apt upgrade -y
 
 # Пункт 2: Установка необходимых пакетов
 echo "Установка необходимых пакетов..."
-sudo apt install -y curl iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip
+sudo apt install -y curl screen iptables build-essential git wget lz4 jq make gcc nano automake autoconf tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip
 
 # Пункт 3: Установка Rust
 echo "Установка Rust..."
