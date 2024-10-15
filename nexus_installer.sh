@@ -21,10 +21,6 @@ export PATH="$HOME/.cargo/bin:$PATH"
 rustup update
 rustc --version
 
-# Пункт 5: Запуск Prover в новом сеансе screen
-echo "Запуск Prover..."
-screen -S nexus -m bash -c 'curl https://cli.nexus.xyz/install.sh | sh'
-
 # Визуализация завершения работы
 echo -e "\033[1;36m"
 echo -e "████╗░██████╗░███████╗████╗  ░█████╗░███████╗░█████╗░███████╗██╗░░░░░░█████╗░"
@@ -38,4 +34,4 @@ echo
 echo -e "\033[1;32mTelegram community: \033[5;31mhttps://t.me/g7monitor\033[0m"
 echo -e "\033[0m"
 echo
-echo "Установка завершена. Для просмотра логов зайдите в скрин сессию: screen -r nexus"
+echo "Подготовка завершена. Для установкм ноды введите команду screen -S nexus -m bash -c 'curl https://cli.nexus.xyz/install.sh | sh'"
