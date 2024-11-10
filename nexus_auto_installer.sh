@@ -84,7 +84,7 @@ echo -e "████╗╚██████╔╝░░██╔╝░░█�
 echo -e "╚═══╝░╚═════╝░░░╚═╝░░░╚═══╝  ╚═╝░░╚═╝╚══════╝╚═╝░░╚═╝╚══════╝╚══════╝░╚════╝░"
 echo -e "\033[1;34m"
 echo
-echo -e "\033[1;32mTelegram community: \033[5;31mhttps://t.me/g7monitor\033[0m"
+echo -e "\033[1;32mTelegram community: \033[5;31mhttps://t.me/g7team_ru\033[0m"
 echo -e "\033[0m"
 echo
 echo "Установка завершена. Для просмотра логов зайдите в скрин сессию: screen -r nexus"
